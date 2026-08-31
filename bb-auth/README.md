@@ -11,7 +11,7 @@ It supports authentication sessions handled by bb-auth, including **Polkit**, **
 | Field   | Value                                |
 | ------- | ------------------------------------ |
 | ID      | `branrgx/bb-auth`                    |
-| Entries | Panel: `prompt`; service: `provider` |
+| Entries | Panels: `prompt`, `blocked`; service: `provider` |
 
 ## Requirements
 
@@ -86,6 +86,16 @@ The panel displays the requestor information supplied by bb-auth when available:
 * authentication state or error;
 * password/input field;
 * cancel and authenticate actions.
+
+If PAM reports that the account is temporarily locked, the password panel is
+not shown. A separate warning panel displays the lock reason and remaining time
+without offering a password field. Closing the warning cancels that
+authentication request.
+
+On an incorrect password, the regular prompt reopens and keeps the error visible
+above the fresh input. Its internal spacing becomes more compact while the error
+is present, so the panel keeps the same configured height without leaving unused
+space on the first attempt.
 
 Press **Enter** to submit the current response.
 

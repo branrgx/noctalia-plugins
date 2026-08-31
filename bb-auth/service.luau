@@ -1,5 +1,6 @@
 local PLUGIN_ID = "branrgx/bb-auth"
 local PANEL_ID = PLUGIN_ID .. ":prompt"
+local BLOCKED_PANEL_ID = PLUGIN_ID .. ":blocked"
 
 local PINENTRY_GRACE_MS = 1000
 
@@ -45,6 +46,7 @@ local function resetSession()
 
     set("echo", false)
     set("confirm_only", false)
+    set("auth_blocked", false)
 
     set("cur_retry", 0)
     set("max_retries", 0)
@@ -123,6 +125,42 @@ local function openPanel()
 
     noctalia.togglePanel(
         PANEL_ID
+    )
+end
+
+
+local function isBlockedMessage(value)
+    if value == nil then
+        return false
+    end
+
+    local text =
+        string.lower(tostring(value))
+
+    return string.find(
+        text,
+        "locked",
+        1,
+        true
+    ) ~= nil
+        or string.find(
+            text,
+            "bloquead",
+            1,
+            true
+        ) ~= nil
+end
+
+
+local function openBlockedPanel()
+    if noctalia.state.get(
+        "blocked_panel_open"
+    ) then
+        return
+    end
+
+    noctalia.togglePanel(
+        BLOCKED_PANEL_ID
     )
 end
 
@@ -208,6 +246,8 @@ local function handleCreated(message)
         context.confirmOnly == true
     )
 
+    set("auth_blocked", false)
+
     set(
         "cur_retry",
         context.curRetry or 0
@@ -260,17 +300,49 @@ local function handleUpdated(message)
             "error",
             message.error
         )
-    else
-        set("error", "")
     end
 
-    if message.info ~= nil then
-        set(
-            "info",
-            message.info
-        )
-    else
-        set("info", "")
+    if message.info ~= nil
+        and message.info ~= ""
+    then
+        local currentInfo =
+            noctalia.state.get("info")
+
+        local newInfo =
+            tostring(message.info)
+
+        -- PAM may send the lock reason and the remaining
+        -- time as separate updates. Preserve both until the
+        -- session ends instead of discarding the first one
+        -- when the password prompt arrives.
+        if currentInfo == nil
+            or currentInfo == ""
+        then
+            set("info", newInfo)
+        elseif not string.find(
+            currentInfo,
+            newInfo,
+            1,
+            true
+        ) then
+            set(
+                "info",
+                currentInfo
+                    .. "\n"
+                    .. newInfo
+            )
+        end
+
+
+        if isBlockedMessage(newInfo) then
+            set("auth_blocked", true)
+            openBlockedPanel()
+            return
+        end
+    end
+
+    if noctalia.state.get("auth_blocked") then
+        return
     end
 
     if message.echo ~= nil then
@@ -464,6 +536,7 @@ end
 resetSession()
 
 set("panel_open", false)
+set("blocked_panel_open", false)
 set("provider_active", false)
 
 
@@ -490,5 +563,6 @@ function onExit()
     resetSession()
 
     set("panel_open", false)
+    set("blocked_panel_open", false)
     set("provider_active", false)
 end

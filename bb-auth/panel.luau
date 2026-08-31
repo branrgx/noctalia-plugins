@@ -153,7 +153,45 @@ local function statusText()
         return errorText
     end
 
+    local infoText =
+        state(
+            "info",
+            ""
+        )
+
+    if infoText ~= "" then
+        return infoText
+    end
+
     return "Authentication required"
+end
+
+
+local function statusIsError()
+    local errorText =
+        state("error", "")
+
+    if errorText ~= "" then
+        return true
+    end
+
+    local infoText =
+        string.lower(
+            state("info", "")
+        )
+
+    return string.find(
+        infoText,
+        "locked",
+        1,
+        true
+    ) ~= nil
+        or string.find(
+            infoText,
+            "bloquead",
+            1,
+            true
+        ) ~= nil
 end
 
 
@@ -182,11 +220,11 @@ local function render()
             false
         )
 
-    local errorText =
-        state(
-            "error",
-            ""
-        )
+    local hasError =
+        statusIsError()
+
+    local contentGap =
+        hasError and 10 or 14
 
     local children = {}
 
@@ -238,11 +276,11 @@ local function render()
                     fontSize = 12,
 
                     color =
-                        errorText ~= ""
+                        hasError
                             and "error"
                             or "on_surface_variant",
 
-                    maxLines = 1,
+                    maxLines = 3,
                 }),
             }
         )
@@ -351,7 +389,7 @@ local function render()
         ui.column(
             {
                 padding = 18,
-                gap = 14,
+                gap = contentGap,
                 fill = "surface",
                 justify = "center",
             },
@@ -568,6 +606,11 @@ end
 
 noctalia.state.watch(
     "error",
+    rerenderIfOpen
+)
+
+noctalia.state.watch(
+    "info",
     rerenderIfOpen
 )
 
