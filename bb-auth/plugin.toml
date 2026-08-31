@@ -1,0 +1,29 @@
+id = "branrgx/bb-auth"
+name = "BB Auth"
+version = "1.0.0"
+plugin_api = 23
+author = "branrgx"
+license = "MIT"
+icon = "lock"
+description = "Noctalia v5 authentication provider for bb-auth"
+tags = ["authentication", "security"]
+
+dependencies = ["python", "bb-auth"]
+
+[[service]]
+id = "provider"
+entry = "service.luau"
+
+[[panel]]
+id = "prompt"
+entry = "panel.luau"
+
+width = 440
+height = 210
+
+placement = "floating"
+position = "center"
+open_near_click = false
+
+keyboard_focus = "exclusive"
+dismiss_on_outside_click = false

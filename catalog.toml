@@ -1,0 +1,12 @@
+[[plugin]]
+id = "branrgx/bb-auth"
+name = "BB Auth"
+version = "1.0.0"
+plugin_api = 23
+updated_at = 1788133866
+added_at = 1788133866
+author = "branrgx"
+license = "MIT"
+icon = "lock"
+description = "Noctalia v5 authentication provider for bb-auth"
+tags = ["authentication", "security"]
