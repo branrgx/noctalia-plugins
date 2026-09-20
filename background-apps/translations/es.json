@@ -1,0 +1,10 @@
+{
+  "action.stop": "Detener",
+  "action.force_stop": "Forzar detención",
+  "tooltip.background_app": "Ejecutándose en segundo plano",
+  "panel.title": "Aplicaciones en segundo plano",
+  "panel.subtitle": "Apps ejecutándose sin ventana",
+  "panel.empty": "No hay apps en segundo plano",
+  "notify.stop_failed": "{app} no permite un cierre limpio. Prueba Forzar detención.",
+  "settings.glyph.label": "Icono"
+}

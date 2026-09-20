@@ -1,0 +1,10 @@
+{
+  "action.stop": "Stop",
+  "action.force_stop": "Force Stop",
+  "tooltip.background_app": "Running in the background",
+  "panel.title": "Background Apps",
+  "panel.subtitle": "Apps running without a window",
+  "panel.empty": "No apps running in the background",
+  "notify.stop_failed": "{app} doesn't support a graceful stop. Try Force Stop.",
+  "settings.glyph.label": "Icon"
+}

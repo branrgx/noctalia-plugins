@@ -10,3 +10,16 @@ license = "MIT"
 icon = "lock"
 description = "Noctalia v5 authentication provider for bb-auth"
 tags = ["authentication", "security"]
+
+[[plugin]]
+id = "branrgx/background-apps"
+name = "Background Apps"
+version = "0.1.0"
+plugin_api = 24
+updated_at = 1789938382
+added_at = 1789938382
+author = "branrgx"
+license = "MIT"
+icon = "applications-system"
+description = "Shows applications running in the background."
+tags = ["background", "apps", "flatpak"]
