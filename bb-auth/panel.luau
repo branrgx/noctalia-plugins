@@ -390,7 +390,6 @@ local function render()
             {
                 padding = 18,
                 gap = contentGap,
-                fill = "surface",
                 justify = "center",
             },
             children

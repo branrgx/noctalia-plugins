@@ -82,7 +82,6 @@ local function render()
             {
                 padding = 20,
                 gap = 14,
-                fill = "surface",
                 justify = "center",
             },
             {
